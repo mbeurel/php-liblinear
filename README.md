@@ -1,12 +1,27 @@
 # php-liblinear
 
-A simple, light and efficient short-text classification tool based on LibLinear for PHP.
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg)](https://php.net/)
+[![Latest Stable Version](https://img.shields.io/packagist/v/mbeurel/php-liblinear.svg)](https://packagist.org/packages/mbeurel/php-liblinear)
+[![Total Downloads](https://poser.pugx.org/mbeurel/php-liblinear/downloads.svg)](https://packagist.org/packages/mbeurel/php-liblinear)
+[![License](https://poser.pugx.org/mbeurel/php-liblinear/license.svg)](https://packagist.org/packages/mbeurel/php-liblinear)
 
-Inspired by Python Librairy [TextGrocery](https://github.com/2shou/TextGrocery).
+A simple, light and efficient short-text classification tool based on [Liblinear](https://www.csie.ntu.edu.tw/~cjlin/liblinear/) for PHP.
 
-For Lemmarizer words, used [TreeTagger](https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger)
+Inspired by Python Library [TextGrocery](https://github.com/2shou/TextGrocery).
 
-## Installation
+For Lemmarizer words, useddistribution [TreeTagger](https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger)
+
+## Installation Liblinear library
+
+Debian or Ubuntu :
+
+```bash
+apt-get install liblinear-dev liblinear-tools liblinear3
+```
+
+Other distribution view [repository github](https://github.com/cjlin1/liblinear)
+
+## Install php-liblinear
 
 You can install it with Composer:
 
@@ -16,7 +31,7 @@ composer require mbeurel/php-liblinear
 
 ## Examples
 
-Example scripts are available in a separate repository [php-liblinear/examples](https://github.com).
+Example scripts are available ina separate repository [php-liblinear/examples](https://github.com/mbeurel/php-liblinear/tree/master/exemple).
 
 ## Sample Code
 ```php
