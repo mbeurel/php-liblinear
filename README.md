@@ -9,7 +9,7 @@ A simple, light and efficient short-text classification tool based on [Liblinear
 
 Inspired by Python Library [TextGrocery](https://github.com/2shou/TextGrocery).
 
-For Lemmarizer words, useddistribution [TreeTagger](https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger)
+For Lemmarizer words, used [TreeTagger](https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger)
 
 ## Installation Liblinear library
 
