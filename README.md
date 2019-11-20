@@ -33,7 +33,7 @@ $data = [
 try {
   
   // Init library
-  $libLinear = new LibLinear("france-marche", 0);
+  $libLinear = new LibLinear("instanceName", 0);
 
   // Liblinear train
   $libLinear->train($data);
