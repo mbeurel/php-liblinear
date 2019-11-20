@@ -1,0 +1,35 @@
+{
+    "name":                             "mbeurel/php-liblinear",
+    "type":                             "library",
+    "description":                      "Used the liblinear library with php",
+    "keywords":                         [
+        "Liblinear",
+        "PHP",
+        "machine learning"
+    ],
+    "homepage":                         "https://github.com/mbeurel/php-liblinear",
+    "license":                          "MIT",
+    "authors": [
+        {
+            "name":                     "Matthieu Beurel",
+            "email":                    "m.beurel@nexboard.fr",
+            "homepage":                 "https://www.nexboard.fr"
+        },
+        {
+            "name":                     "Clément Meunier",
+            "email":                    "c.meunier@nexboard.fr",
+            "homepage":                 "https://www.nexboard.fr"
+        }
+    ],
+    "require": {
+        "ext-json":                     "*",
+        "php":                          "^7.1",
+        "symfony/filesystem":           "4.3.*"
+    },
+    "require-dev": {
+        "symfony/debug-pack":           "^1.0.6"
+    },
+    "autoload": {
+        "psr-4": { "PhpLiblinear\\": "lib" }
+    }
+}
