@@ -9,7 +9,7 @@ A simple, light and efficient short-text classification tool based on [Liblinear
 
 Inspired by Python Library [TextGrocery](https://github.com/2shou/TextGrocery).
 
-For Lemmarizer words, used [TreeTagger](https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger)
+For Lemmarizer words, used [php-lemmatizer](https://github.com/mbeurel/php-lemmatizer)
 
 ## Installation Liblinear library
 
@@ -70,7 +70,7 @@ try {
   //      "value"        =>  "French",
   //      "percentage"   =>  0.763259,
   //      "percentages"  =>  array(
-  //        "French"        => 0.763259
+  //        "French"        => 0.763259,
   //        "English"       => 0.236741
   //      )
   //    )
