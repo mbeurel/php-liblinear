@@ -48,7 +48,13 @@ $data = [
 try {
   
   // Init library
-  $libLinear = new LibLinear("instanceName", 0);
+  $libLinear = new LibLinear("instanceName", __DIR__."/var", array(
+        "type"      =>  0,            // Liblinear type, view the liblinear documentation
+        "cost"      =>  1.0,          
+        "epsilon"   =>  0.1,
+        "debug"     =>  false
+      )
+    );
 
   // Liblinear train
   $libLinear->train($data);
