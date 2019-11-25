@@ -43,6 +43,11 @@ class DataConverter
 
   /**
    * DataConverter constructor.
+   *
+   * @param $nameInstance
+   * @param $varPath
+   *
+   * @throws \Exception
    */
   public function __construct($nameInstance, $varPath)
   {
@@ -139,7 +144,7 @@ class DataConverter
    *
    * @return array
    */
-  public function transformPredictions($predictResult)
+  public function transformResultsPredictions($predictResult)
   {
     $predictResultArray = explode("\n", $predictResult);
     $headFile = explode(" ", $predictResultArray[0]);
@@ -152,7 +157,7 @@ class DataConverter
       {
         $prediction = array(
           "value"       =>  null,
-          "percentage" =>  0,
+          "percentage"  =>  0,
           "percentages" =>  array()
         );
         foreach($values as $keyValue => $value)
@@ -172,6 +177,20 @@ class DataConverter
       }
     }
     return $predictions;
+  }
+
+  public function transformResultPredictionsWithDecValues($value, array $decValues)
+  {
+    $pourcentages = array();
+    foreach($decValues as $key => $pourcentage)
+    {
+      $pourcentages[$this->classMapping->getClassMapValue($key)] = $pourcentage;
+    }
+    return array(
+      "value"       =>  $this->classMapping->getClassMapValue($value),
+      "percentage"  =>  $decValues[$value],
+      "percentages" =>  $pourcentages
+    );
   }
 
   /**

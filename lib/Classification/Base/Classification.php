@@ -10,6 +10,7 @@
 
 namespace PhpLiblinear\Classification\Base;
 use PhpLiblinear\Converter\DataConverter;
+use PhpLiblinear\Model\LiblinearModel;
 use PhpLiblinear\Tools\FilesystemTrait;
 
 /**
@@ -32,21 +33,6 @@ abstract class Classification
   protected $libname;
 
   /**
-   * @var int
-   */
-  protected $type;
-
-  /**
-   * @var float
-   */
-  protected $cost;
-
-  /**
-   * @var float
-   */
-  protected $epsilon;
-
-  /**
    * @var string
    */
   protected $binPath = "/usr/bin/";
@@ -57,7 +43,7 @@ abstract class Classification
   protected $varPathPool;
 
   /**
-   * @var string
+   * @var LiblinearModel
    */
   protected $model;
 
@@ -116,8 +102,7 @@ abstract class Classification
     if (!is_writable(dirname($this->modelFilePath))) {
       throw new \Exception(sprintf('File "%s" can\'t be saved.', basename($this->modelFilePath)));
     }
-    $serialized = $this->model;
-    $result = file_put_contents($this->modelFilePath, $serialized, LOCK_EX);
+    $result = file_put_contents($this->modelFilePath, $this->model->values, LOCK_EX);
     if ($result === false) {
       throw new \Exception(sprintf('File "%s" can\'t be saved.', basename($this->modelFilePath)));
     }
@@ -132,7 +117,8 @@ abstract class Classification
     if (!file_exists($this->modelFilePath) || !is_readable($this->modelFilePath)) {
       throw new \Exception(sprintf('File "%s" can\'t be open.', basename($this->modelFilePath)));
     }
-    $this->model = file_get_contents($this->modelFilePath);
+    $this->model = new LiblinearModel((string) file_get_contents($this->modelFilePath));
+
     return $this;
   }
 
@@ -159,14 +145,14 @@ abstract class Classification
         sprintf('Failed running %s command: "%s" with reason: "%s"', $this->libname, $command, array_pop($output))
       );
     }
-    $this->model = (string) file_get_contents($this->modelFilePath);
+    $this->model = new LiblinearModel((string) file_get_contents($this->modelFilePath));
     $this->remove($this->modelFilePath);
   }
 
   /**
-   * @return string
+   * @return LiblinearModel
    */
-  public function getModel(): string
+  public function getModel(): LiblinearModel
   {
     return $this->model;
   }
@@ -185,27 +171,23 @@ abstract class Classification
     {
       $samples[$key] = $this->dataConverter->convertToSvm($sample);
     }
-    $samples = $this->dataConverter->transformSamplesForPredict($samples);
-    $predictResult = $this->runSvmPredict($samples, true);
-    $predictions = $this->dataConverter->transformPredictions($predictResult);
+    $predictions = $this->runSvmPredict($samples);
     return $predictions;
   }
 
   /**
    * @param array $samples
-   * @param bool $probabilityEstimates
    *
-   * @return string
+   * @return array
    * @throws \Exception
    */
-  protected function runSvmPredict(array $samples, bool $estimates): string
+  protected function runSvmPredict(array $samples): array
   {
-    file_put_contents($predictFileName = $this->join($this->varPathPool, uniqid('php-liblinear_', true)), implode("\n", $samples));
+    file_put_contents($predictFileName = $this->join($this->varPathPool, uniqid('php-liblinear_', true)), implode("\n", $this->dataConverter->transformSamplesForPredict($samples)));
     $outputFileName = $predictFileName.'-output';
     $command = $this->buildPredictCommand(
       $predictFileName,
-      $outputFileName,
-      $estimates
+      $outputFileName
     );
     $output = [];
     exec(escapeshellcmd($command).' 2>&1', $output, $return);
@@ -219,8 +201,74 @@ abstract class Classification
       );
     }
 
-    return $predictions;
+    if($this->model->hasEstimate())
+    {
+      return $this->dataConverter->transformResultsPredictions($predictions);
+    }
+    else
+    {
+      $n = $this->model->nrFeature;
+      $nrW = (int) $this->model->nrClass;
+      $lx = array();
+      foreach (explode(" ", implode(" ", $samples)) as $sampleValue)
+      {
+        list($key, $value) = explode(":", $sampleValue);
+        $lx[$key] = $value;
+      }
+      $lx = $this->normalizeOne($lx);
+
+
+      $w = $this->model->w;
+      $decValues = array();
+      for($i=0;$i<$nrW;$i++)
+      {
+        $decValues[$i] = 0;
+      }
+
+      foreach($lx as $idx => $value)
+      {
+        if($idx <= $n)
+        {
+          for($i=0; $i < $nrW; $i++)
+          {
+            $decValues[$i] += (float) $w[(($idx-1)*$nrW+$i)]*$value;
+          }
+        }
+      }
+      $results = explode("\n", $predictions);
+      $predictionsResult = array();
+      foreach($results as $key => $result)
+      {
+        if($result != "")
+        {
+          $predictionsResult[$key] = $this->dataConverter->transformResultPredictionsWithDecValues($result, $decValues);
+        }
+      }
+      return $predictionsResult;
+    }
   }
+
+  protected function normalizeOne($lx)
+  {
+    $norm = 0;
+    $wordCount = 0;
+
+    foreach($lx as $key => $value)
+    {
+      $lx[$key] = $lx[$key] != 0 ? $lx[$key] : 0;
+      $wordCount += (float) $lx[$key];
+      $norm += $lx[$key] * $lx[$key];
+    }
+    $norm = pow($norm, 0.5);
+
+    foreach($lx as $key => $value)
+    {
+      $lx[$key] = $value/$norm;
+    }
+    return $lx;
+  }
+
+
 
   /**
    * @return string
@@ -268,7 +316,7 @@ abstract class Classification
    *
    * @return string
    */
-  protected abstract function buildPredictCommand(string $predictFileName, string $outputFileName, bool $estimates);
+  protected abstract function buildPredictCommand(string $predictFileName, string $outputFileName);
 
   /**
    * @param string $path
