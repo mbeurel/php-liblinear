@@ -113,6 +113,7 @@ class FeatureGenerator extends Converter
   protected function arrayZip($array)
   {
     $countArray = count($array);
+    $out = array();
     for($i = 0; $i < $countArray; $i++)
     {
       $out[$i] = array();
