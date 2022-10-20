@@ -23,12 +23,12 @@ class LibLinear extends Classification
   /**
    * @var string
    */
-  protected $libname = "liblinear";
+  protected string $libname = "liblinear";
 
   /**
    * @var array
    */
-  protected $trainParameters = array();
+  protected array $trainParameters = array();
 
   /**
    * LibLinear constructor.
@@ -46,6 +46,11 @@ class LibLinear extends Classification
     parent::__construct($nameInstance, $varPath, $config);
   }
 
+  /**
+   * @param array $parameters
+   *
+   * @return void
+   */
   protected function constructTrainParameters(array $parameters)
   {
     $type = (isset($parameters["type"]) && $parameters["type"]) ? $parameters["type"] : 0;
@@ -73,9 +78,6 @@ class LibLinear extends Classification
   }
 
   /**
-   * @param string $trainingSetFileName
-   * @param string $modelFileName
-   *
    * @return string
    */
   protected function buildTrainCommand(): string
@@ -90,14 +92,13 @@ class LibLinear extends Classification
   }
 
   /**
-   * @param string $testSetFileName
-   * @param string $modelFileName
+   * @param string $predictFileName
    * @param string $outputFileName
-   * @param bool $probabilityEstimates
    *
    * @return string
    */
-  protected function buildPredictCommand(string $predictFileName, string $outputFileName): string {
+  protected function buildPredictCommand(string $predictFileName, string $outputFileName): string
+  {
     return sprintf(
       '%sliblinear-predict%s -b %d %s %s %s',
       $this->binPath,

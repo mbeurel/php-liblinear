@@ -20,19 +20,19 @@ trait FilesystemTrait
 {
 
   /**
-   * @var Filesystem
+   * @var Filesystem|null
    */
-  protected $filesystem;
+  protected ?Filesystem $filesystem = null;
 
   /**
    * @var string
    */
-  protected $varPath;
+  protected string $varPath;
 
   /**
    * @var string
    */
-  protected $nameInstance;
+  protected string $nameInstance;
 
   /**
    * @return mixed|string
@@ -47,7 +47,7 @@ trait FilesystemTrait
    * @return string
    * @throws \Exception
    */
-  public function join()
+  public function join(): string
   {
     $parts = func_get_args();
     $dirtyPath = implode('/', $parts);
@@ -70,7 +70,7 @@ trait FilesystemTrait
   /**
    * @return Filesystem
    */
-  public function getFilesystem()
+  public function getFilesystem(): Filesystem
   {
     if(!$this->filesystem)
     {
@@ -85,7 +85,7 @@ trait FilesystemTrait
    *
    * @return $this
    */
-  public function mkdir($dirs, $mode = 0777)
+  public function mkdir($dirs, int $mode = 0777)
   {
     $this->getFilesystem()->mkdir($dirs, $mode);
     return $this;
@@ -98,7 +98,7 @@ trait FilesystemTrait
    *
    * @return $this
    */
-  public function copy($originFile, $targetFile, $overwriteNewerFiles = false)
+  public function copy($originFile, $targetFile, bool $overwriteNewerFiles = false)
   {
     $this->getFilesystem()->copy($originFile, $targetFile, $overwriteNewerFiles);
     return $this;

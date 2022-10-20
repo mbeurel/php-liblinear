@@ -12,19 +12,14 @@
     "authors": [
         {
             "name":                     "Matthieu Beurel",
-            "email":                    "m.beurel@nexboard.fr",
-            "homepage":                 "https://www.nexboard.fr"
-        },
-        {
-            "name":                     "Clément Meunier",
-            "email":                    "c.meunier@nexboard.fr",
-            "homepage":                 "https://www.nexboard.fr"
+            "email":                    "matthieu@mbeurel.com",
+            "homepage":                 "https://www.mbeurel.com"
         }
     ],
     "require": {
         "ext-json":                     "*",
-        "php":                          "^7.1",
-        "symfony/filesystem":           "4.3.*"
+        "php":                          "^7.4 || ^8.0",
+        "symfony/filesystem":           "^4.4|^5.4"
     },
     "require-dev": {
         "symfony/debug-pack":           "^1.0.6"

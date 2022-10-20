@@ -25,42 +25,42 @@ abstract class Classification
   /**
    * @var bool
    */
-  protected $debug = false;
+  protected bool $debug = false;
 
   /**
    * @var string
    */
-  protected $libname;
+  protected string $libname;
 
   /**
    * @var string
    */
-  protected $binPath = "/usr/bin/";
+  protected string $binPath = "/usr/bin/";
 
   /**
    * @var string
    */
-  protected $varPathPool;
+  protected string $varPathPool;
 
   /**
    * @var LiblinearModel
    */
-  protected $model;
+  protected LiblinearModel $model;
 
   /**
    * @var string
    */
-  protected $nameInstance;
+  protected string $nameInstance;
 
   /**
    * @var string
    */
-  protected $modelFilePath;
+  protected string $modelFilePath;
 
   /**
    * @var DataConverter
    */
-  protected $dataConverter;
+  protected DataConverter $dataConverter;
 
   /**
    * Classification constructor.
