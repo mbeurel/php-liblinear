@@ -86,6 +86,6 @@ class ClassMapping extends Converter
    */
   public function getClassMapValue($id)
   {
-    return $this->classMap[$id];
+    return array_key_exists($id, $this->classMap) ? $this->classMap[$id] : null;
   }
 }

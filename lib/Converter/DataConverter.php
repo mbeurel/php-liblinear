@@ -172,7 +172,10 @@ class DataConverter
             $prediction["percentages"][$this->classMapping->getClassMapValue($labelId)] = (float) $value;
           }
         }
-        $prediction["percentage"] = (float) $prediction["percentages"][$prediction['value']];
+        if($prediction['value'])
+        {
+          $prediction["percentage"] = (float) $prediction["percentages"][$prediction['value']];
+        }
         $predictions[] = $prediction;
       }
     }

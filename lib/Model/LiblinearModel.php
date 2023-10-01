@@ -86,8 +86,11 @@ class LiblinearModel
   protected function retreiveFunctionByKey($regex, &$values)
   {
     preg_match($regex, $values, $match);
-    $values = str_replace($match[0], "", $values);
-    return $match[1];
+    if(array_key_exists(0, $match))
+    {
+      $values = str_replace($match[0], "", $values);
+    }
+    return array_key_exists(1, $match) ? $match[1] : null;
   }
 
   /**
