@@ -115,7 +115,7 @@ abstract class Classification
   public function load()
   {
     if (!file_exists($this->modelFilePath) || !is_readable($this->modelFilePath)) {
-      throw new \Exception(sprintf('File "%s" can\'t be open.', basename($this->modelFilePath)));
+      throw new \Exception(sprintf('File "%s" can\'t be open.', $this->modelFilePath));
     }
     $this->model = new LiblinearModel((string) file_get_contents($this->modelFilePath));
 
